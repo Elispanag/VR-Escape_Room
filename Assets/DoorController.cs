@@ -1,66 +1,83 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    [Header("Opening Movement")]
-    public Vector3 openOffset = new Vector3(0f, 2.2f, 0f);
+    public enum DoorOpenType { Swing, Slide }
+
+    [Header("Door Movement Type")]
+    public DoorOpenType openType = DoorOpenType.Swing;
+
+    [Header("Swing Settings (Local Rotation)")]
+    [Tooltip("Μοίρες περιστροφής (δοκιμάστε Y ή Z)")]
+    public Vector3 openRotationOffset = new Vector3(0, 0, 90f);
+
+    [Header("Slide Settings (Position)")]
+    public Vector3 openOffset = new Vector3(0, 2.5f, 0);
+
+    [Header("Speed")]
     public float openSpeed = 2f;
 
     [Header("Objects To Enable After Opening")]
-    public GameObject[] objectsToEnableAfterOpen;
+    public List<GameObject> objectsToEnableAfterOpening = new List<GameObject>();
 
-    [Header("State")]
-    public bool isOpen = false;
+    private bool isOpening = false;
+    private bool isOpened = false;
 
-    private Vector3 closedPosition;
-    private Vector3 openPosition;
-    private bool hasEnabledObjects = false;
+    private Vector3 initialPosition;
+    private Vector3 targetPosition;
+
+    private Quaternion initialLocalRotation;
+    private Quaternion targetLocalRotation;
 
     private void Start()
     {
-        closedPosition = transform.position;
-        openPosition = closedPosition + openOffset;
-    }
+        initialPosition = transform.localPosition;
+        targetPosition = initialPosition + openOffset;
 
-    private void Update()
-    {
-        if (isOpen)
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                openPosition,
-                openSpeed * Time.deltaTime
-            );
-
-            if (!hasEnabledObjects && Vector3.Distance(transform.position, openPosition) < 0.01f)
-            {
-                EnableObjectsAfterOpening();
-            }
-        }
+        initialLocalRotation = transform.localRotation;
+        targetLocalRotation = initialLocalRotation * Quaternion.Euler(openRotationOffset);
     }
 
     public void OpenDoor()
     {
-        if (isOpen)
-            return;
-
-        isOpen = true;
-        Debug.Log("Door opening.");
+        if (!isOpened && !isOpening)
+        {
+            StartCoroutine(OpenDoorRoutine());
+        }
     }
 
-    private void EnableObjectsAfterOpening()
+    private IEnumerator OpenDoorRoutine()
     {
-        hasEnabledObjects = true;
-        if (objectsToEnableAfterOpen != null)
+        isOpening = true;
+
+        if (openType == DoorOpenType.Swing)
         {
-            foreach (GameObject obj in objectsToEnableAfterOpen)
+            while (Quaternion.Angle(transform.localRotation, targetLocalRotation) > 0.5f)
             {
-                if (obj != null)
-                {
-                    obj.SetActive(true);
-                    Debug.Log("Enabled after door opened: " + obj.name);
-                }
+                transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetLocalRotation, openSpeed * 50f * Time.deltaTime);
+                yield return null;
             }
+            transform.localRotation = targetLocalRotation;
+        }
+        else if (openType == DoorOpenType.Slide)
+        {
+            while (Vector3.Distance(transform.localPosition, targetPosition) > 0.01f)
+            {
+                transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetPosition, openSpeed * Time.deltaTime);
+                yield return null;
+            }
+            transform.localPosition = targetPosition;
+        }
+
+        isOpening = false;
+        isOpened = true;
+
+        foreach (var obj in objectsToEnableAfterOpening)
+        {
+            if (obj != null)
+                obj.SetActive(true);
         }
     }
 }
