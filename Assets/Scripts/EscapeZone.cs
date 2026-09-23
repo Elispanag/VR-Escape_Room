@@ -1,19 +1,24 @@
 using UnityEngine;
+
 public class EscapeZone : MonoBehaviour
 {
-	public GameObject escapedMessage;
-private void Start()
-{
-    if (escapedMessage != null)
-        escapedMessage.SetActive(false);
-}
+    [Header("UI Feedback")]
+    public GameObject escapedMessage;
 
-private void OnTriggerEnter(Collider other)
-{
-    if (escapedMessage != null)
+    private void Start()
     {
-        escapedMessage.SetActive(true);
-        Debug.Log("You Escaped!");
+        // Hide the escape message at startup
+        if (escapedMessage != null)
+            escapedMessage.SetActive(false);
     }
-}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Display the win message when the player enters the zone
+        if (escapedMessage != null)
+        {
+            escapedMessage.SetActive(true);
+            Debug.Log("You Escaped!");
+        }
+    }
 }

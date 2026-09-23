@@ -23,6 +23,7 @@ public class ButtonSequencePuzzle : MonoBehaviour
         currentSequence.Add(buttonId);
         int index = currentSequence.Count - 1;
 
+        // Reset sequence if the pressed button is wrong
         if (currentSequence[index] != correctSequence[index])
         {
             Debug.Log("Wrong sequence. Resetting puzzle.");
@@ -32,17 +33,19 @@ public class ButtonSequencePuzzle : MonoBehaviour
 
         Debug.Log("Correct button: " + buttonId);
 
+        // Check if the player completed the full sequence
         if (currentSequence.Count == correctSequence.Count)
         {
             solved = true;
             Debug.Log("Correct sequence. Final door unlocked.");
 
-            // Αναπαραγωγή ήχου ξεκλειδώματος
+            // Play unlock sound effect
             if (unlockAudio != null)
             {
                 unlockAudio.Play();
             }
 
+            // Open the final exit door
             if (finalDoor != null)
             {
                 finalDoor.OpenDoor();

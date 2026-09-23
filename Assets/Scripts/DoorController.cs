@@ -10,7 +10,7 @@ public class DoorController : MonoBehaviour
     public DoorOpenType openType = DoorOpenType.Swing;
 
     [Header("Swing Settings (Local Rotation)")]
-    [Tooltip("Μοίρες περιστροφής (δοκιμάστε Y ή Z)")]
+    [Tooltip("Rotation offset in degrees (try Y or Z axis)")]
     public Vector3 openRotationOffset = new Vector3(0, 0, 90f);
 
     [Header("Slide Settings (Position)")]
@@ -33,6 +33,7 @@ public class DoorController : MonoBehaviour
 
     private void Start()
     {
+        // Store starting transforms and calculate target open transforms
         initialPosition = transform.localPosition;
         targetPosition = initialPosition + openOffset;
 
@@ -52,6 +53,7 @@ public class DoorController : MonoBehaviour
     {
         isOpening = true;
 
+        // Animate door rotation for swing type
         if (openType == DoorOpenType.Swing)
         {
             while (Quaternion.Angle(transform.localRotation, targetLocalRotation) > 0.5f)
@@ -61,6 +63,7 @@ public class DoorController : MonoBehaviour
             }
             transform.localRotation = targetLocalRotation;
         }
+        // Animate door position for slide type
         else if (openType == DoorOpenType.Slide)
         {
             while (Vector3.Distance(transform.localPosition, targetPosition) > 0.01f)
@@ -74,6 +77,7 @@ public class DoorController : MonoBehaviour
         isOpening = false;
         isOpened = true;
 
+        // Enable trigger zones or UI after the door fully opens
         foreach (var obj in objectsToEnableAfterOpening)
         {
             if (obj != null)

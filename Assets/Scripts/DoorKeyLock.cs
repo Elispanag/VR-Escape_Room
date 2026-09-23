@@ -19,13 +19,16 @@ public class DoorKeyLock : MonoBehaviour
         if (unlocked)
             return;
 
+        // Check if the colliding object or its parent has a Rigidbody
         Rigidbody keyRigidbody = other.attachedRigidbody;
         if (keyRigidbody == null)
             return;
 
+        // Verify the object has the required key tag
         if (!keyRigidbody.CompareTag(requiredKeyTag))
             return;
 
+        // Optionally check if the key was actually collected in inventory
         if (requireInventoryKey)
         {
             if (InventoryManager.Instance == null)
@@ -48,12 +51,13 @@ public class DoorKeyLock : MonoBehaviour
     {
         unlocked = true;
 
-        
+        // Play unlock sound effect
         if (unlockAudio != null)
         {
             unlockAudio.Play();
         }
 
+        // Open the connected door
         if (door != null)
         {
             door.OpenDoor();
