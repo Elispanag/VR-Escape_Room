@@ -5,6 +5,9 @@ public class DoorKeyLock : MonoBehaviour
     [Header("Door")]
     public DoorController door;
 
+    [Header("Audio")]
+    public AudioSource unlockAudio; 
+
     [Header("Key Detection")]
     public string requiredKeyTag = "Key";
     public bool requireInventoryKey = true;
@@ -44,6 +47,13 @@ public class DoorKeyLock : MonoBehaviour
     private void UnlockDoor()
     {
         unlocked = true;
+
+        
+        if (unlockAudio != null)
+        {
+            unlockAudio.Play();
+        }
+
         if (door != null)
         {
             door.OpenDoor();

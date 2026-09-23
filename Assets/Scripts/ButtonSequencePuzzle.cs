@@ -9,6 +9,9 @@ public class ButtonSequencePuzzle : MonoBehaviour
     [Header("Final Door")]
     public DoorController finalDoor;
 
+    [Header("Audio")]
+    public AudioSource unlockAudio; 
+
     private List<string> currentSequence = new List<string>();
     private bool solved = false;
 
@@ -33,6 +36,13 @@ public class ButtonSequencePuzzle : MonoBehaviour
         {
             solved = true;
             Debug.Log("Correct sequence. Final door unlocked.");
+
+            // Αναπαραγωγή ήχου ξεκλειδώματος
+            if (unlockAudio != null)
+            {
+                unlockAudio.Play();
+            }
+
             if (finalDoor != null)
             {
                 finalDoor.OpenDoor();
