@@ -2021,7 +2021,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "CONTROLS (SIMULATOR)\n\n\u2022 W / A / S / D: Move\n\n\u2022 Q / E: Move Head Down / Up\n\n\u2022 Mouse Move: Look around\n\n\u2022 [ / ]: Select Left / Right Hand\n\n\u2022 Tab: Toggle hands moving with head\n\n\u2022 F: Teleport (Right Hand)\n\n\u2022 G: Grab / Hold object (Left Hand)\n\nOBJECTIVE: ROOM 1\n\nYou are locked inside the bedroom. Search the room thoroughly to find the hidden key and unlock the door to the next chamber.\n\n(Hint: The key is black.)"
+  m_text: "CONTROLS (SIMULATOR)\n\n\u2022 W / A / S / D: Move\n\n\u2022 Q / E: Move Head Down / Up\n\n\u2022 Mouse Move: Look around\n\n\u2022 [ / ]: Select Left / Right Hand\n\n\u2022 Tab: Toggle hands moving with head\n\n\u2022 F: Teleport (Right Hand)\n\n\u2022 G: Grab / Hold object (Left Hand)\n\nOBJECTIVE: ROOM 1\n\nYou are locked inside the bedroom. Search the room thoroughly to find the hidden key and unlock the door to the next chamber.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
